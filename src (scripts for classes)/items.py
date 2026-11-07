@@ -10,7 +10,7 @@ class Weapon:
         Initialise the Weapon
         Args:
         name (str): The name of the weapon.
-        damage_dice (Dice): calls the Dice class to find the weapons damage
+        damage_dice (Dice): calls the Dice class to roll the weapons damage
         """
         self.name = name
         self.damage_dice = damage_dice

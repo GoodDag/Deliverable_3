@@ -47,23 +47,41 @@ class Character:
             return True
         return False
 
+    def introduce(self) -> None:
+        """Creates string that introduces character"""
+        print(f"Hi, my name is {self.name}!")
+
+    def __repr__(self) -> str:
+        """Representation of character object"""
+        return f"<Character name={self.name} hp={self.hp} damage={self.damage}>)"
+
+    def __str__(self) -> str:
+        """String representation of character object"""
+        return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
+
+    @property
+    def hp(self) -> int:
+        """Public read-only property to inspect HP without allowing direct, unsafe
+        edits."""
+        return self._hp
+
 
 aria = Character(name="Aria", hp_max=100, damage=10)
 kura = Character(name="Kura", hp_max=100, damage=20)
 
-print('starting hp:', aria._hp)
+print('starting hp:', aria.hp)
 aria.take_damage(kura)
-print('after 20 damage:', aria._hp)
+print('after 20 damage:', aria.hp)
 aria.heal()
-print('after 10 heal:', aria._hp)
+print('after 10 heal:', aria.hp)
 kura.attack(aria)
-print('after being attacked by kura:', aria._hp)
+print('after being attacked by kura:', aria.hp)
 kura.attack(aria)
 kura.attack(aria)
 kura.attack(aria)
-print('is aria alive?', aria.is_alive, 'hp:', aria._hp)
+print('is aria alive?', aria.is_alive, 'hp:', aria.hp)
 kura.attack(aria)
-print('is aria alive?', aria.is_alive, 'hp:', aria._hp)
+print('is aria alive?', aria.is_alive, 'hp:', aria.hp)
 
 
 d8 = Dice(sides=8)
@@ -71,6 +89,6 @@ sword = Weapon(name='sword', damage_dice=d8)
 swordsman = Character(name="swordsman", hp_max=100, weapon=sword)
 
 print('-----------')
-print('kura starting hp:', kura._hp)
+print('kura starting hp:', kura.hp)
 swordsman.attack(kura)
-print('hp after sword attack:', kura._hp)
+print('hp after sword attack:', kura.hp)
