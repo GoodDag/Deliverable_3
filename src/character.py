@@ -1,6 +1,3 @@
-import sys
-sys.path.insert(0, 'src (scripts for classes)/')
-
 from dice import Dice
 from items import Weapon
 
@@ -91,4 +88,5 @@ swordsman = Character(name="swordsman", hp_max=100, weapon=sword)
 print('-----------')
 print('kura starting hp:', kura.hp)
 swordsman.attack(kura)
+print('damage done', )
 print('hp after sword attack:', kura.hp)

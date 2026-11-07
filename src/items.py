@@ -1,5 +1,3 @@
-import sys
-sys.path.insert(0, 'src (scripts for classes)/')
 from dice import Dice
 
 
