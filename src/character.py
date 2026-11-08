@@ -1,4 +1,3 @@
-from dice import Dice
 from items import Weapon
 
 
@@ -99,9 +98,16 @@ class Warrior(Character):
 
             
 
+    def __str__(self) -> str:
+        """String representation of warrior object"""
+        if self.weapon is None:
+            return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and {self.damage} damage"
+        else:
+            return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and d{self.weapon.damage_dice.sides} weapon damage"
+
 
 class Mage(Character):
-    def __init__(self, name: str, hp_max: int = 100, damage: int = 10, 
+    def __init__(self, name: str, hp_max: int = 100, damage: int = 10,
                  weapon: Weapon | None = None, mana: int = 30, mana_max: int = 30) -> None:
         """
         Initialise the Character
@@ -113,7 +119,7 @@ class Mage(Character):
         self.mana = mana
         self.mana_max = mana_max
 
-    def attack(self, target: Character) -> None:  
+    def attack(self, target: Character) -> None:
         """Removes 10 mana when used and adds 5 mana if it is under 10,
           if the mage have a weapon it will be used if the mana is under 10"""
         if self.mana >= 10:
