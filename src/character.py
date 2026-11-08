@@ -1,4 +1,3 @@
-from dice import Dice
 from items import Weapon
 
 
@@ -89,21 +88,16 @@ class Warrior(Character):
             armor_damage = target.weapon.roll_damage() - self.armor
             self._hp = max(self._hp - max(armor_damage, 0), 0)
 
+    def __str__(self) -> str:
+        """String representation of warrior object"""
+        if self.weapon is None:
+            return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and {self.damage} damage"
+        else:
+            return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and d{self.weapon.damage_dice.sides} weapon damage"
 
-dice = Dice(sides=10)
-sword = Weapon("Sword", dice)
-
-warrior = Warrior("Nora", hp_max=100, armor=6)
-enemy = Character("Enemy", damage=15, weapon=sword)
-
-enemy.attack(warrior)
-
-print(warrior.hp)
-
-print("------------------------")
 
 class Mage(Character):
-    def __init__(self, name: str, hp_max: int = 100, damage: int = 10, 
+    def __init__(self, name: str, hp_max: int = 100, damage: int = 10,
                  weapon: Weapon | None = None, mana: int = 30, mana_max: int = 30) -> None:
         """
         Initialise the Character
@@ -115,61 +109,24 @@ class Mage(Character):
         self.mana = mana
         self.mana_max = mana_max
 
-    def attack(self, target: Character) -> None:  
+    def attack(self, target: Character) -> None:
         """Removes 10 mana when used and adds 5 mana if it is under 10,
           if the mage have a weapon it will be used if the mana is under 10"""
         if self.mana >= 10:
             self.mana = self.mana - 10
             target._hp -= self.damage * 2
-            target._hp = max(target._hp, 0) 
+            target._hp = max(target._hp, 0)
         elif self.mana < 10:
             if self.weapon is None:
                 target._hp -= self.damage
-                self.mana += 5
+                self.mana = min(self.mana + 5, self.mana_max)
             elif isinstance(self.weapon, Weapon):
                 target._hp -= self.weapon.roll_damage()
                 self.mana = min(self.mana + 5, self.mana_max)
-        
 
-
-
-mage = Mage("Mathilde", damage=10, mana=30)
-enemy = Character("Enemy", hp_max=100)
-
-mage.attack(enemy)
-
-print("Enemy HP:", enemy.hp)
-print("Mage mana:", mage.mana)
-
-print("")
-
-mage2 = Mage("Mathilde", damage=10, mana=5)
-enemy2 = Character("Enemy", hp_max=100)
-
-mage2.attack(enemy2)
-
-print("Enemy HP:", enemy2.hp)
-print("Mage mana:", mage2.mana)
-
-print("")
-
-mage = Mage("Mathilde", damage=10, mana=10)
-enemy = Character("Enemy", hp_max=100)
-
-mage.attack(enemy)
-
-print("Enemy HP:", enemy.hp)
-print("Mage mana:", mage.mana)
-
-print("")
-
-dice = Dice(sides=15)
-sword = Weapon("Sword", dice)
-
-mage = Mage("Mathilde", damage=10, mana=5, weapon=sword)
-enemy = Character("Enemy", hp_max=100)
-
-mage.attack(enemy)
-
-print("Enemy HP:", enemy.hp)
-print("Mage mana:", mage.mana)
+    def __str__(self) -> str:
+        """String representation of mage object"""
+        if self.weapon is None:
+            return f"Mage: {self.name} with {self.hp} HP, {self.mana} mana and {self.damage} damage"
+        else:
+            return f"Mage: {self.name} with {self.hp} HP, {self.mana} mana and d{self.weapon.damage_dice.sides} weapon damage"
