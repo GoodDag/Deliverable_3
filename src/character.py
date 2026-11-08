@@ -28,7 +28,6 @@ class Character:
         if isinstance(target.weapon, Weapon):
             self._hp -= target.weapon.roll_damage()
             self._hp = max(self._hp, 0)
-            
 
     def heal(self, amount: int = 10) -> None:
         """Heals the character by a given amount"""
@@ -52,11 +51,17 @@ class Character:
 
     def __repr__(self) -> str:
         """Representation of character object"""
-        return f"<Character name={self.name} hp={self.hp} damage={self.damage}>)"
+        if self.weapon is None:
+            return f"<Character name={self.name} hp={self.hp} damage={self.damage}>)"
+        else:
+            return f"<Character name={self.name} hp={self.hp} weapon={self.weapon}>)"
 
     def __str__(self) -> str:
         """String representation of character object"""
-        return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
+        if self.weapon is None:
+            return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
+        else:
+            return f"Character: {self.name} with {self.hp} HP and d{self.weapon.damage_dice.sides} weapon damage"
 
     @property
     def hp(self) -> int:
@@ -64,35 +69,6 @@ class Character:
         edits."""
         return self._hp
 
-
-aria = Character(name="Aria", hp_max=100, damage=10)
-kura = Character(name="Kura", hp_max=100, damage=20)
-
-print('starting hp:', aria.hp)
-aria.take_damage(kura)
-print('after 20 damage:', aria.hp)
-aria.heal()
-print('after 10 heal:', aria.hp)
-kura.attack(aria)
-print('after being attacked by kura:', aria.hp)
-kura.attack(aria)
-kura.attack(aria)
-kura.attack(aria)
-print('is aria alive?', aria.is_alive, 'hp:', aria.hp)
-kura.attack(aria)
-print('is aria alive?', aria.is_alive, 'hp:', aria.hp)
-
-
-d8 = Dice(sides=8)
-sword = Weapon(name='sword', damage_dice=d8)
-swordsman = Character(name="swordsman", hp_max=100, weapon=sword)
-
-print('-----------')
-print('kura starting hp:', kura.hp)
-swordsman.attack(kura)
-print('damage done', )
-print('hp after sword attack:', kura.hp)
-print("----------------------------------")
 
 class Warrior(Character):
     def __init__(self, name: str, hp_max: int = 100, damage: int = 10,
@@ -113,9 +89,8 @@ class Warrior(Character):
             armor_damage = target.weapon.roll_damage() - self.armor
             self._hp = max(self._hp - max(armor_damage, 0), 0)
 
-            
-        
-dice = Dice(sides=10)  
+
+dice = Dice(sides=10)
 sword = Weapon("Sword", dice)
 
 warrior = Warrior("Nora", hp_max=100, armor=6)
@@ -152,8 +127,8 @@ class Mage(Character):
                 target._hp -= self.damage
                 self.mana += 5
             elif isinstance(self.weapon, Weapon):
-               target._hp -= self.weapon.roll_damage()
-               self.mana = min(self.mana + 5, self.mana_max)
+                target._hp -= self.weapon.roll_damage()
+                self.mana = min(self.mana + 5, self.mana_max)
         
 
 
@@ -198,7 +173,3 @@ mage.attack(enemy)
 
 print("Enemy HP:", enemy.hp)
 print("Mage mana:", mage.mana)
-        
-
-    
-
