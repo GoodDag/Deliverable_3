@@ -16,6 +16,9 @@ class Weapon:
     def roll_damage(self) -> int:
         return self.damage_dice.roll()
 
+    def __str__(self) -> str:
+        return f'{self.name} with damage dice d{self.damage_dice.sides}'
+
 d8 = Dice(sides=8)
 sword = Weapon(name='sword', damage_dice=d8)
 print('sword damage (d8):', sword.roll_damage())
