@@ -1,5 +1,6 @@
 import random
 
+
 class Dice:
     """The dice that will be used in the game"""
     def __init__(self, sides: int = 6) -> None:
