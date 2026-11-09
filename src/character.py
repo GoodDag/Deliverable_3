@@ -39,6 +39,11 @@ class Character:
         """Attack and deal damage to target character"""
         target.take_damage(self)
 
+    def take_mana_damage(self, target: Character) -> None:
+        self._hp -= target.damage
+        self._hp = max(self._hp, 0)
+        
+
     @property
     def is_alive(self) -> bool:
         """Checks if character hp is over or equal to zero"""
@@ -113,19 +118,11 @@ class Warrior(Character):
             armor_damage = target.weapon.roll_damage() - self.armor
             self._hp = max(self._hp - max(armor_damage, 0), 0)
 
+    def take_mana_damage(self, target: Character) -> None:
+        self._hp -= max(target.damage - self.armor, 0)
+
             
-        
-dice = Dice(sides=10)  
-sword = Weapon("Sword", dice)
 
-warrior = Warrior("Nora", hp_max=100, armor=6)
-enemy = Character("Enemy", damage=15, weapon=sword)
-
-enemy.attack(warrior)
-
-print(warrior.hp)
-
-print("------------------------")
 
 class Mage(Character):
     def __init__(self, name: str, hp_max: int = 100, damage: int = 10, 
@@ -145,59 +142,25 @@ class Mage(Character):
           if the mage have a weapon it will be used if the mana is under 10"""
         if self.mana >= 10:
             self.mana = self.mana - 10
-            target._hp -= self.damage * 2
+            target._hp -= self.damage 
+            target.take_mana_damage(self)
             target._hp = max(target._hp, 0) 
         elif self.mana < 10:
             if self.weapon is None:
                 target._hp -= self.damage
-                self.mana += 5
+                self.mana += 5            
             elif isinstance(self.weapon, Weapon):
-               target._hp -= self.weapon.roll_damage()
-               self.mana = min(self.mana + 5, self.mana_max)
-        
+                self.mana = min(self.mana + 5, self.mana_max)
+                target.take_damage(self)
+                
 
 
 
-mage = Mage("Mathilde", damage=10, mana=30)
-enemy = Character("Enemy", hp_max=100)
 
-mage.attack(enemy)
 
-print("Enemy HP:", enemy.hp)
-print("Mage mana:", mage.mana)
 
-print("")
 
-mage2 = Mage("Mathilde", damage=10, mana=5)
-enemy2 = Character("Enemy", hp_max=100)
 
-mage2.attack(enemy2)
-
-print("Enemy HP:", enemy2.hp)
-print("Mage mana:", mage2.mana)
-
-print("")
-
-mage = Mage("Mathilde", damage=10, mana=10)
-enemy = Character("Enemy", hp_max=100)
-
-mage.attack(enemy)
-
-print("Enemy HP:", enemy.hp)
-print("Mage mana:", mage.mana)
-
-print("")
-
-dice = Dice(sides=15)
-sword = Weapon("Sword", dice)
-
-mage = Mage("Mathilde", damage=10, mana=5, weapon=sword)
-enemy = Character("Enemy", hp_max=100)
-
-mage.attack(enemy)
-
-print("Enemy HP:", enemy.hp)
-print("Mage mana:", mage.mana)
         
 
     
