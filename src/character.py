@@ -21,12 +21,16 @@ class Character:
 
     def take_damage(self, target: Character) -> None:
         """Changes the character's hp based on the targets damage"""
-        if target.weapon is None:
-            self._hp -= target.damage
-            self._hp = max(self._hp, 0)
         if isinstance(target.weapon, Weapon):
             self._hp -= target.weapon.roll_damage()
             self._hp = max(self._hp, 0)
+        else:
+            self._hp -= target.damage
+            self._hp = max(self._hp, 0)
+
+    def take_mana_damage(self, target: Character) -> None:
+        self._hp -= target.damage
+        self._hp = max(self._hp, 0)
 
     def heal(self, amount: int = 10) -> None:
         """Heals the character by a given amount"""
@@ -55,17 +59,17 @@ class Character:
 
     def __repr__(self) -> str:
         """Representation of character object"""
-        if self.weapon is None:
-            return f"<Character name={self.name} hp={self.hp} damage={self.damage}>)"
-        else:
+        if isinstance(self.weapon, Weapon):
             return f"<Character name={self.name} hp={self.hp} weapon={self.weapon}>)"
+        else:
+            return f"<Character name={self.name} hp={self.hp} damage={self.damage}>)"
 
     def __str__(self) -> str:
         """String representation of character object"""
-        if self.weapon is None:
-            return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
-        else:
+        if isinstance(self.weapon, Weapon):
             return f"Character: {self.name} with {self.hp} HP and d{self.weapon.damage_dice.sides} weapon damage"
+        else:
+            return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
 
     @property
     def hp(self) -> int:
@@ -87,11 +91,15 @@ class Warrior(Character):
 
     def take_damage(self, target: Character) -> None:
         """Changes the hp based on if there is a weapon or not and damages the armor first"""
-        if target.weapon is None:
-            self._hp -= max(target.damage - self.armor, 0)
-        elif isinstance(target.weapon, Weapon):
+        if isinstance(target.weapon, Weapon):
             armor_damage = target.weapon.roll_damage() - self.armor
             self._hp = max(self._hp - max(armor_damage, 0), 0)
+        else:
+            self._hp -= max(target.damage - self.armor, 0)
+
+    def take_mana_damage(self, target: Character) -> None:
+        self._hp -= max(target.damage - self.armor, 0)
+        self._hp = max(self._hp, 0)
 
     def take_mana_damage(self, target: Character) -> None:
         self._hp -= max(target.damage - self.armor, 0)
@@ -100,10 +108,10 @@ class Warrior(Character):
 
     def __str__(self) -> str:
         """String representation of warrior object"""
-        if self.weapon is None:
-            return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and {self.damage} damage"
-        else:
+        if isinstance(self.weapon, Weapon):
             return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and d{self.weapon.damage_dice.sides} weapon damage"
+        else:
+            return f"Warrior: {self.name} with {self.hp} HP, {self.armor} armor and {self.damage} damage"
 
 
 class Mage(Character):
@@ -119,7 +127,7 @@ class Mage(Character):
         self.mana = mana
         self.mana_max = mana_max
 
-    def attack(self, target: Character) -> None:
+    def attack(self, target: Character) -> None:  
         """Removes 10 mana when used and adds 5 mana if it is under 10,
           if the mage have a weapon it will be used if the mana is under 10"""
         if self.mana >= 10:
@@ -147,3 +155,15 @@ class Mage(Character):
 
     
 
+            target._hp -= self.damage
+            target.take_mana_damage(self)
+        elif self.mana < 10:
+            target.take_damage(self)
+            self.mana = min(self.mana + 5, self.mana_max)
+
+    def __str__(self) -> str:
+        """String representation of mage object"""
+        if isinstance(self.weapon, Weapon):
+            return f"Mage: {self.name} with {self.hp} HP, {self.mana} mana and d{self.weapon.damage_dice.sides} weapon damage"
+        else:
+            return f"Mage: {self.name} with {self.hp} HP, {self.mana} mana and {self.damage} damage"
