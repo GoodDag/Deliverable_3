@@ -96,9 +96,6 @@ class Warrior(Character):
         self._hp -= max(target.damage * 2 - self.armor, 0)
         self._hp = max(self._hp, 0)
 
-    def take_mana_damage(self, target: Character) -> None:
-        self._hp -= max(target.damage - self.armor, 0)
-
     def __str__(self) -> str:
         """String representation of warrior object"""
         if isinstance(self.weapon, Weapon):
@@ -129,6 +126,11 @@ class Mage(Character):
         elif self._mana < 10:
             target.take_damage(self)
             self._mana = min(self._mana + 5, self.mana_max)
+
+    @property
+    def mana(self) -> int:
+        """Public read-only property to inspect mana without allowing direct, unsafe edits."""
+        return self._mana
 
     def __str__(self) -> str:
         """String representation of mage object"""
