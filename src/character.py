@@ -29,7 +29,7 @@ class Character:
             self._hp = max(self._hp, 0)
 
     def take_mana_damage(self, target: Character) -> None:
-        self._hp -= target.damage
+        self._hp -= target.damage * 2
         self._hp = max(self._hp, 0)
 
     def heal(self, amount: int = 10) -> None:
@@ -41,6 +41,10 @@ class Character:
         """Attack and deal damage to target character"""
         target.take_damage(self)
 
+    def introduce(self) -> None:
+        """Creates string that introduces character"""
+        print(f"Hi, my name is {self.name}!")
+
     @property
     def is_alive(self) -> bool:
         """Checks if character hp is over or equal to zero"""
@@ -48,9 +52,11 @@ class Character:
             return True
         return False
 
-    def introduce(self) -> None:
-        """Creates string that introduces character"""
-        print(f"Hi, my name is {self.name}!")
+    @property
+    def hp(self) -> int:
+        """Public read-only property to inspect HP without allowing direct, unsafe
+        edits."""
+        return self._hp
 
     def __repr__(self) -> str:
         """Representation of character object"""
@@ -65,12 +71,6 @@ class Character:
             return f"Character: {self.name} with {self.hp} HP and d{self.weapon.damage_dice.sides} weapon damage"
         else:
             return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
-
-    @property
-    def hp(self) -> int:
-        """Public read-only property to inspect HP without allowing direct, unsafe
-        edits."""
-        return self._hp
 
 
 class Warrior(Character):
@@ -93,7 +93,7 @@ class Warrior(Character):
             self._hp -= max(target.damage - self.armor, 0)
 
     def take_mana_damage(self, target: Character) -> None:
-        self._hp -= max(target.damage - self.armor, 0)
+        self._hp -= max(target.damage * 2 - self.armor, 0)
         self._hp = max(self._hp, 0)
 
     def __str__(self) -> str:
@@ -114,23 +114,22 @@ class Mage(Character):
         mana_max (int): max amount of mana the mage can have
         """
         super().__init__(name, hp_max, damage, weapon)
-        self.mana = mana
+        self._mana = mana
         self.mana_max = mana_max
 
     def attack(self, target: Character) -> None:  
         """Removes 10 mana when used and adds 5 mana if it is under 10,
           if the mage have a weapon it will be used if the mana is under 10"""
-        if self.mana >= 10:
-            self.mana = self.mana - 10
-            target._hp -= self.damage
+        if self._mana >= 10:
+            self._mana = self._mana - 10
             target.take_mana_damage(self)
-        elif self.mana < 10:
+        elif self._mana < 10:
             target.take_damage(self)
-            self.mana = min(self.mana + 5, self.mana_max)
+            self._mana = min(self._mana + 5, self.mana_max)
 
     def __str__(self) -> str:
         """String representation of mage object"""
         if isinstance(self.weapon, Weapon):
-            return f"Mage: {self.name} with {self.hp} HP, {self.mana} mana and d{self.weapon.damage_dice.sides} weapon damage"
+            return f"Mage: {self.name} with {self.hp} HP, {self._mana} mana and d{self.weapon.damage_dice.sides} weapon damage"
         else:
-            return f"Mage: {self.name} with {self.hp} HP, {self.mana} mana and {self.damage} damage"
+            return f"Mage: {self.name} with {self.hp} HP, {self._mana} mana and {self.damage} damage"
