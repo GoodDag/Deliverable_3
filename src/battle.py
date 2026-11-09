@@ -14,11 +14,14 @@ class Battle:
         self.enemy = enemy
 
     def play_round(self) -> None:
+        """Does one round of attacks between a hero and an enemy,
+        as long as the enemy is alive after being attacked"""
         self.hero.attack(self.enemy)
         if self.enemy.is_alive is True:
             self.enemy.attack(self.hero)
 
     def simulate_battle(self, round: int = 1) -> str:
+        """Simulates a battle between two characters as long as both of them are alive"""
         hero_starting_hp = self.hero.hp_max
         enemy_starting_hp = self.enemy.hp_max
         while self.hero.is_alive and self.enemy.is_alive is True:

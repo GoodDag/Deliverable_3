@@ -29,6 +29,7 @@ class Character:
             self._hp = max(self._hp, 0)
 
     def take_mana_damage(self, target: Character) -> None:
+        """Changes hp based on double the target damage"""
         self._hp -= target.damage * 2
         self._hp = max(self._hp, 0)
 
@@ -93,6 +94,7 @@ class Warrior(Character):
             self._hp -= max(target.damage - self.armor, 0)
 
     def take_mana_damage(self, target: Character) -> None:
+        """Changes hp based on double the target damage"""
         self._hp -= max(target.damage * 2 - self.armor, 0)
         self._hp = max(self._hp, 0)
 
@@ -117,7 +119,7 @@ class Mage(Character):
         self._mana = mana
         self.mana_max = mana_max
 
-    def attack(self, target: Character) -> None:  
+    def attack(self, target: Character) -> None:
         """Removes 10 mana when used and adds 5 mana if it is under 10,
           if the mage have a weapon it will be used if the mana is under 10"""
         if self._mana >= 10:
