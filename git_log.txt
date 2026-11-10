@@ -1,0 +1,28 @@
+* ebf5316 - Nora Hattrem, 33 seconds ago : readded git log
+* fac5593 - Nora Hattrem, 77 seconds ago : Fixed mistake
+* 0520d4a - Nora Hattrem, 68 minutes ago : Added git log and requirements.txt
+* 713cbe0 - Nora Hattrem, 16 hours ago : Added missing doc-strings
+* 767d637 - Nora Hattrem, 17 hours ago : Small fixes
+* 7120a16 - Nora Hattrem, 17 hours ago : Small fixes
+* ab59fb1 - Nora Hattrem, 17 hours ago : Finished battle simulations
+* 75c0237 - Nora Hattrem, 17 hours ago : Fixed mage attack
+* b96b07f - Nora Hattrem, 18 hours ago : Added som example battles
+* f15aef4 - Nora Hattrem, 2 days ago : Added presentation of Character subclasses
+* 7de812f - Nora Hattrem, 2 days ago : Added presentation Weapon class
+* 29a8247 - Nora Hattrem, 2 days ago : Added presentationn of dice class
+* eebaa01 - Nora Hattrem, 2 days ago : Added peresntation of character class
+* 9075e29 - Nora Hattrem, 2 days ago : Added setup for presenting classes
+* f23fa67 - Mathilde Mæland Andersen, 18 hours ago : task 4 correction
+* bc69df7 - Mathilde Mæland Andersen, 2 days ago : Task 4 and wrote doc strings
+*   1615f99 - Nora Hattrem, 3 days ago : Merge branch 'task_5'
+|\  
+| * c1d6ff8 - Nora Hattrem, 3 days ago : Added code for task 5
+* | e2caf63 - Nora Hattrem, 3 days ago : Changed name for file
+|/  
+* 28bc123 - Nora Hattrem, 3 days ago : Finished task 3
+* 6fa98ae - Nora Hattrem, 4 days ago : Added code for task 3
+* 2f4bd37 - Nora Hattrem, 4 days ago : Finished task 1
+* a8741ec - Mathilde Mæland Andersen, 4 days ago : task 2
+* edee581 - Nora Hattrem, 7 days ago : Added files for placing classes
+* 90df8b3 - Nora Hattrem, 7 days ago : Created general file structure and started task 1
+* 193b13b - GoodDag, 9 days ago : Initial commit
